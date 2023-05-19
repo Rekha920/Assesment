@@ -39,7 +39,7 @@ const loginAndVerify=async(req,res)=>{
     const fetchUser=getUserByEmail(email);
     if(fetchUser){
       const lastLoggedInTime=fetchUser.updatedAt;
-      const currentTime=new Date().getime();
+      const currentTime=new Date().getTime();
       const differenceTime=lastLoggedInTime-currentTime;
       const time=3600000;
       if(differenceTime <3600000){
