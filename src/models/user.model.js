@@ -31,7 +31,6 @@ const userSchema = new mongoose.Schema({
 const User = mongoose.model("User", userSchema);
 
 const checkUserExist = async (email, otp) => {
-  console.log(email, otp, "nxsjanj");
   const userExist = await User.findOne({ email: email });
   if (userExist) {
     const updateUsersDetails = await User.updateOne(
@@ -41,7 +40,7 @@ const checkUserExist = async (email, otp) => {
           otp: otp,
         },
       },
-      { upsert: true }
+      { new: true }
     );
   } else {
     const saveUserDetails = await User.create({
@@ -56,7 +55,7 @@ const getUserByEmail=async(email)=>{
   return fetchUser;
 }
 const validateOTP=async(email,otp)=>{
-  const data=User.getUserByEmail(email);
+  const data=await getUserByEmail(email);
   if(data.otp===otp){
     return true
   }else{

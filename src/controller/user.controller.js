@@ -21,14 +21,17 @@ const loginAndSendOtp=async(req,res)=>{
             token:token,
             message:"OTP sent on registered email Address.!"
         })
+        return;
       }else{
         res.status(422).json({
             success:false,
             message:"Invalid Credentials"
         })
+        return;
       }
     } catch (error) {
       res.status(404).json({ message: error.message });
+      return;
     }    
 }
 
@@ -36,14 +39,15 @@ const loginAndVerify=async(req,res)=>{
   try {
     let count=0;
     const {email,otp}=req.body;
-    const fetchUser=getUserByEmail(email);
+    const fetchUser=await getUserByEmail(email);
     if(fetchUser){
       const lastLoggedInTime=fetchUser.updatedAt;
       const currentTime=new Date().getTime();
       const differenceTime=lastLoggedInTime-currentTime;
       const time=3600000;
       if(differenceTime <3600000){
-        res.status(401).json({message:`Account is Blocked for ${time}ms`})
+        res.status(401).json({message:`Account is Blocked for ${time}ms`});
+        return;
       }
     }else{
       blockedUsers=blockedUsers.filter(user=>user.email===email)
@@ -51,21 +55,25 @@ const loginAndVerify=async(req,res)=>{
     const isValidOtp=validateOTP(email,otp);
     if(isValidOtp){
       res.status(200).json({message:"Login In Successfully.!"})
+      return;
     }else{
       const user=blockedUsers.find(user=>user.email===email);
       if(user){
         user.attempts++;
         if(user.attempts>=5){
           user.timestamp=new Date().getTime();
-          return res.status(401).json({message:"Invalid Otp Account is Blocked for 1 hour."});
+           res.status(401).json({message:"Invalid Otp Account is Blocked for 1 hour."});
+           return;
         }else{
           blockedUsers.push({email,attemps:1,time:0})
         }
       }
-     return res.status(401).json({ message: 'Invalid OTP.' });
+      res.status(401).json({ message: 'Invalid OTP.' });
+      return
     }
   } catch (error) {
     res.status(401).json({ message: error.message });
+    return
   }
 }
 

@@ -1,23 +1,32 @@
 const nodeMailer = require("nodemailer");
-
+console.log()
 const sendMail = async (mailObjectReceived) => {
   const transport= await nodeMailer.createTransport({
-    host: "sandbox.smtp.mailtrap.io",
-    port: 2525,
+    host: process.env.HOST,
+    port: process.env.EMAIL_PORT,
     auth: {
-      user: "7f4bbde8d07c63",
-      pass: "fbece406b9cab3"
+      user:  process.env.EMAIL_SENDER,
+      pass: process.env.EMAIL_SENDER_PASSWORD
     }
   });
   
 const mailOptions={
-from: '7f4bbde8d07c63',  // sender address
-to: mailObjectReceived.to,   // list of receivers
+from: process.env.EMAIL_SENDER,
+to: mailObjectReceived.to,   
 subject: mailObjectReceived.subject,
-html: `<b>Hey there! ${mailObjectReceived.text} </b><br> This is our first message sent with Nodemailer<br/>`,
+html: `
+      <html>
+        <head>
+          <title>One-Time Password</title>
+        </head>
+        <body>
+          <h1>Your One-Time Password: ${mailObjectReceived.otp}</h1>
+        </body>
+      </html>
+`,
 };
 
-const response=await transport.sendMail(mailOptions)
-return response.response;
+const responseFromMailService=await transport.sendMail(mailOptions)
+return responseFromMailService.response;
 };
 module.exports=sendMail;
