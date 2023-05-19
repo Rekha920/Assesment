@@ -57,7 +57,7 @@ router.post('/api/sendEmail', sendMailF);
 router.all("/*", (req, res) => {
   return res.status(404).send({
     error: true,
-    message: `This api you try to access is unavalable.`,
+    message: `This api you try to access is unavailable.`,
     response: null,
   });
 });

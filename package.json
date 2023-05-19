@@ -14,7 +14,12 @@
     "console-hijacker": "^1.0.4",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
+    "get-trim-all": "^1.0.4",
+    "jsonwebtoken": "^9.0.0",
     "mongoose": "^7.1.1",
-    "nodemon": "^2.0.22"
+    "nodemailer": "^6.9.2",
+    "nodemon": "^2.0.22",
+    "otp-generator": "^4.0.1",
+    "redis": "^4.6.6"
   }
 }

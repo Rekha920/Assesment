@@ -19,3 +19,4 @@ const schema = new Schema({
 });
 
 module.exports.userModel = model('user', schema);
+
