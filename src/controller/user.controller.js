@@ -28,7 +28,7 @@ const loginAndSendOtp=async(req,res)=>{
         })
       }
     } catch (error) {
-      res.status(401).json({ message: error.message });
+      res.status(404).json({ message: error.message });
     }    
 }
 
@@ -65,7 +65,7 @@ const loginAndVerify=async(req,res)=>{
      return res.status(401).json({ message: 'Invalid OTP.' });
     }
   } catch (error) {
-    
+    res.status(401).json({ message: error.message });
   }
 }
 

@@ -1,7 +1,7 @@
 require('dotenv').config()
 require('./src/hijacker.console')
 const express = require('express');
-const router = require('./src/routers/main.router1');
+const router = require('./src/routers/main.router');
 const { default: mongoose } = require('mongoose');
 const trimAllDataMD = require('./src/middleware/trim.middleware');
 const port = process.env.PORT || 4000;
